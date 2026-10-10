@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodeAtlas — AI Codebase Investigator</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">🗺️ <strong>CodeAtlas</strong> <span class="tag">AI Codebase Investigator</span></div>
+</header>
+<main class="container">
+  <section class="card hero">
+    <h1>Understand any Python codebase in minutes</h1>
+    <p>Upload a project <code>.zip</code>. CodeAtlas parses it, scores risky functions,
+       maps call flows, and answers questions with links to real source lines.</p>
+    <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="upload-row">
+      <input type="file" name="file" accept=".zip" required>
+      <button type="submit" class="btn primary">Analyze project</button>
+    </form>
+    <p class="muted">No sample handy? <a href="{{ url_for('load_sample') }}">Load the demo project →</a></p>
+  </section>
+
+  {% if projects %}
+  <section class="card">
+    <h2>Recent projects</h2>
+    <ul class="proj-list">
+      {% for p in projects %}
+      <li><a href="{{ url_for('project_page', pid=p.id) }}">{{ p.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <section class="card">
+    <h2>What CodeAtlas does</h2>
+    <div class="grid4">
+      <div><strong>🔍 Function search</strong><p>Find any function and get a plain-English explanation.</p></div>
+      <div><strong>🔗 Call tracing</strong><p>See who calls what, and trace paths between functions.</p></div>
+      <div><strong>⚠️ Risk scores</strong><p>Complexity + dependency signals flag where to test first.</p></div>
+      <div><strong>💬 Code chat</strong><p>Ask questions; answers cite actual <code>file:line</code>.</p></div>
+    </div>
+  </section>
+</main>
+<footer class="foot muted">CodeAtlas · set <code>OPENAI_API_KEY</code> for LLM-powered summaries (works offline without it)</footer>
+</body>
+</html>

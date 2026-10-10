@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ name }} — CodeAtlas</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><a href="{{ url_for('index') }}" class="home">🗺️ <strong>CodeAtlas</strong></a>
+    <span class="tag">{{ name }}</span></div>
+  <div><a class="btn" href="/api/{{ pid }}/report">⬇ Download report</a></div>
+</header>
+<main class="container wide">
+  <nav class="tabs">
+    <button class="tab active" data-tab="overview">Overview</button>
+    <button class="tab" data-tab="functions">Functions</button>
+    <button class="tab" data-tab="trace">Trace</button>
+    <button class="tab" data-tab="chat">Chat</button>
+  </nav>
+
+  <section id="tab-overview" class="card tabpane">
+    <h2>Project overview</h2>
+    <div id="ov-summary" class="md"><p class="muted">Loading…</p></div>
+    <div class="stats" id="ov-stats"></div>
+    <h3>Riskiest functions</h3>
+    <table class="tbl"><thead><tr><th>Function</th><th>Location</th><th>Risk</th><th>Score</th><th>Cplx</th></tr></thead>
+    <tbody id="ov-risk"></tbody></table>
+    <h3>Modules</h3>
+    <table class="tbl"><thead><tr><th>Module</th><th>File</th><th>Functions</th><th>Classes</th><th>LOC</th></tr></thead>
+    <tbody id="ov-mods"></tbody></table>
+  </section>
+
+  <section id="tab-functions" class="card tabpane hidden">
+    <h2>Function explorer</h2>
+    <div class="row">
+      <input id="q" type="search" placeholder="Search functions… (e.g. parse, save, risk)" autocomplete="off">
+    </div>
+    <div class="cols">
+      <div class="list" id="results"><p class="muted">Type to search.</p></div>
+      <div class="detail" id="detail"><p class="muted">Select a function to inspect it.</p></div>
+    </div>
+  </section>
+
+  <section id="tab-trace" class="card tabpane hidden">
+    <h2>Flow-to-function tracer</h2>
+    <div class="row">
+      <input id="t-from" placeholder="from function (e.g. main)">
+      <input id="t-to" placeholder="to function (e.g. save)">
+      <button class="btn primary" id="t-go">Trace</button>
+    </div>
+    <div id="t-out"><p class="muted">Finds call paths between two functions (≤ 6 hops).</p></div>
+  </section>
+
+  <section id="tab-chat" class="card tabpane hidden">
+    <h2>Ask about this codebase</h2>
+    <div id="chatlog" class="chatlog"></div>
+    <div class="row">
+      <input id="chatq" placeholder='Try: "explain load_data" · "who calls save" · "riskiest functions" · "overview"'>
+      <button class="btn primary" id="chatgo">Ask</button>
+    </div>
+  </section>
+</main>
+<script>const PID = "{{ pid }}";</script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
